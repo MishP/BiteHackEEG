@@ -9,7 +9,6 @@ Options:
     --id=<id> neurosteer device id
     --filename=<filename> file name to write
 """
-
 import websocket
 import csv
 import json
