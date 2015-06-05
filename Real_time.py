@@ -16,6 +16,8 @@ pg.setConfigOptions(antialias=True)
 
 p1 = win.addPlot(title="Alpha")
 curve1 = p1.plot(pen='y')
+
+
 data = np.random.normal(size=(10,100))
 ptr = 0
 

@@ -145,20 +145,7 @@ if __name__ == "__main__":
     # process_message(msg)
 
 
-def update(self):
-    global curve1, data, ptr, p1
-    curve1.setData(self.alpha)
-    curve2.setData(self.beta)
-    curve3.setData(self.gama)
-    curve4.setData(self.delta)
-    curve5.setData(self.theta)
-    curve6.setData(self.sigma)
-    curve7.setData((self.h1 + self.h2) / 2)
-    curve8.setData((self.e1 + self.e2 + self.e3) / 3)
-    curve9.setData((self.c1 + self.c2 + self.c3) / 3)
-    timer = QtCore.QTimer()
-    timer.timeout.connect(update)
-    timer.start(1000)
+
 
 
 if __name__ == '__main__':
