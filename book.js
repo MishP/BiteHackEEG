@@ -19,3 +19,13 @@ $('.hidden-teaser').click(function(){
 	$('#'+id).toggle(1000);
 	$(this).toggleClass('open');
 });
+
+
+$('a').click(function(){
+	var where = $(this).attr('href');
+	if (where.substr(0,1)=='#') {
+		$.get('http://127.0.0.1:8080/?key=' + where.substr(1));
+	}
+	
+	
+});
