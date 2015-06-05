@@ -1,0 +1,35 @@
+body {
+	direction: rtl;
+	max-width: 40em;
+	text-align: right;
+}
+
+a {
+	color: blue;
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+img {
+	vertical-align: middle;
+}
+
+.hidden {
+	border-right: 3px solid #900;
+	padding-right: 1em;
+}
+
+.hidden-teaser:after {
+	border: 3px solid lightblue;
+	border-radius: 1em;
+	color: green;
+	content:" \219E";
+	display: inline-block;
+	line-height: 1em;
+	margin-right: 0.3em;
+	padding: 0.3em;
+}
+
+.hidden-teaser.open:after {
+	content:" \21A0";
+}
