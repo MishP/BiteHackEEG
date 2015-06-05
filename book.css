@@ -33,3 +33,13 @@ img {
 .hidden-teaser.open:after {
 	content:" \21A0";
 }
+
+.feedback {
+	border: 1px solid #AAA;
+	padding: 1em;
+	text-align: center;
+	width: 90%;
+}
+	.feedback.done {
+		color: #C00;
+	}
