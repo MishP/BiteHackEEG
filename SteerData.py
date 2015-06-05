@@ -16,12 +16,20 @@ import docopt
 from datetime import datetime
 from StringIO import StringIO
 import thread
+from pyqtgraph.Qt import QtGui, QtCore
+import numpy as np
+import pyqtgraph as pg
+import subprocess
+
+app = QtGui.QApplication([])
 import time
 
 ws = websocket.WebSocket()
 device_id = ""
 filename = ""
 closing = False
+cmd = 'Real_time.py'
+p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
 
 class BrainWave:
     def __init__(self):
@@ -45,7 +53,8 @@ class BrainWave:
         self.time = datetime.utcnow()
 
     def to_row(self):
-        return [self.time, self.alpha, self.beta, self.gamma, self.delta, self.theta, self.sigma, self.h1, self.h2, self.e1,
+        return [self.time, self.alpha, self.beta, self.gamma, self.delta, self.theta, self.sigma, self.h1, self.h2,
+                self.e1,
                 self.e2, self.e3, self.c1, self.c2, self.c3]
 
 
@@ -87,7 +96,7 @@ def on_open(socket):
 
 
 def init_socket(socket):
-    socket_path = "ws://cloud.neurosteer.com:8080/v1/features/000666" + device_id + "/pull" # "4e5401"
+    socket_path = "ws://cloud.neurosteer.com:8080/v1/features/000666" + device_id + "/pull"  # "4e5401"
     print socket_path
     websocket.enableTrace(True)
     socket = websocket.WebSocketApp(socket_path,
@@ -98,13 +107,13 @@ def init_socket(socket):
     print "running ..."
 
     socket.run_forever()
-    #socket.keep_running = True
+    # socket.keep_running = True
     return socket
 
 
 def write_message(message):
     row = message.to_row()
-    #print '****   \t ' + str(row)
+    # print '****   \t ' + str(row)
     writer.writerow(row)
     fileout.flush()
 
@@ -115,9 +124,8 @@ def cancel_thread():
 
     ws.keep_running = False
     ws.close()
-    #fileout.flush()
-    #fileout.close()
-
+    # fileout.flush()
+    # fileout.close()
 
 
 if __name__ == "__main__":
@@ -129,16 +137,35 @@ if __name__ == "__main__":
     writer = csv.writer(fileout)
     print "File columns are: time(utc), alpha, beta, gamma, delta, theta, sigma, h1, h2, e1, e2, e3, c1, c2, c3"
 
-
     print "Using device id: " + device_id
     print "Output to file: " + filename
     thread.start_new_thread(cancel_thread, ())
     ws = init_socket(ws)
-    #msg = "{u'features': {u'alpha': 1, u'h2': 2, u'sigma': 3, u'h1': 4, u'c2': 5, u'beta': 6, u'gamma': 7, u'delta': 8, u'c3': 9, u'theta': 10, u'c1': 11, u'e1': 12, u'e3': 13, u'e2': 14}}".replace("'", '"').replace('u"', '"')
-    #process_message(msg)
+    # msg = "{u'features': {u'alpha': 1, u'h2': 2, u'sigma': 3, u'h1': 4, u'c2': 5, u'beta': 6, u'gamma': 7, u'delta': 8, u'c3': 9, u'theta': 10, u'c1': 11, u'e1': 12, u'e3': 13, u'e2': 14}}".replace("'", '"').replace('u"', '"')
+    # process_message(msg)
+
+
+def update(self):
+    global curve1, data, ptr, p1
+    curve1.setData(self.alpha)
+    curve2.setData(self.beta)
+    curve3.setData(self.gama)
+    curve4.setData(self.delta)
+    curve5.setData(self.theta)
+    curve6.setData(self.sigma)
+    curve7.setData((self.h1 + self.h2) / 2)
+    curve8.setData((self.e1 + self.e2 + self.e3) / 3)
+    curve9.setData((self.c1 + self.c2 + self.c3) / 3)
+    timer = QtCore.QTimer()
+    timer.timeout.connect(update)
+    timer.start(1000)
+
+
+if __name__ == '__main__':
+    import sys
+
+    if (sys.flags.interactive != 1) or not hasattr(QtCore, 'PYQT_VERSION'):
+        QtGui.QApplication.instance().exec_()
+
     while not closing:
         pass
-
-
-
-
